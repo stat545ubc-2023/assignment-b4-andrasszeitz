@@ -14,7 +14,7 @@ Option A -- Strings and functional programming in R
 
 ## Exercise 1 
 
-I will employ the tidytext package and stop_words dataset to remove the most common stop words.
+Using the tidytext package and stop_words dataset, I will remove the most common stop words from Jane Austen's Persuasion novel.
 
 Installing the required packages.
 
@@ -178,3 +178,64 @@ test_that("Handles Empty and Single Character Strings", {
   expect_equal(custom_pig_latin("a"), "abla")
 })
 ```
+## Exercise 3
+
+Evaluating the mtcars dataset and fitting linear regression models for each car make to predict fuel efficiency (mpg) based on other variables.
+
+```{r}
+
+library(tidyverse)
+
+# Load necessary packages
+library(purrr)
+
+# Load the mtcars dataset
+data(mtcars)
+
+# Task 1: Make a column of model objects
+models <- mtcars %>%
+  group_by(cyl) %>%
+  nest() %>%
+  mutate(model = map(data, ~ lm(mpg ~ disp + hp + wt, data = .)))
+
+# Task 2: Evaluate the model (e.g., get residuals for each group)
+models <- models %>%
+  mutate(residuals = map2(model, data, ~ residuals(.x, data = .y)))
+
+# Task 3: Print out intermediate tibble for inspection
+print(models)
+
+# Task 4: Unnest the resulting calculations
+results <- models %>%
+  unnest(cols = c(data, residuals)) %>%
+  select(cyl, mpg, residuals)
+
+# Task 5: Print your final tibble to screen
+print(results)
+
+# Task 6: Produce a plot communicating something about the result
+results %>%
+  ggplot(aes(x = residuals, y = mpg, color = as.factor(cyl))) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Residual Plot for Linear Regression Models by Cylinder",
+       x = "Residuals",
+       y = "Miles Per Gallon",
+       color = "Cylinders")
+
+```
+
+Task 1: Grouped the mtcars dataset by the number of cylinders (cyl), then used nest() to create a nested column of data frames for each group. I used map() to fit a linear model (lm()) for each group.
+
+Task 2: Used map2() to calculate residuals for each model, considering the original data.
+
+Task 3: Printed out the intermediate tibble to inspect the fitted models and residuals for each group.
+
+Task 4: Unnested the results, keeping the original data, and the residuals. This tibble is better for analysis and plotting.
+
+Task 5: Print the final tibble to the screen.
+
+Task 6: Produce a residual plot to visualize the fit and residuals for each group. The plot helps the reader to understand how well the linear model fits the data for each cylinder group.
+
+The above example can be adapted to various datasets, providing a framework for fitting models, evaluating them, and visualizing the results for different groups in a dataset.
+
