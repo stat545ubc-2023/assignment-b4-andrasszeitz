@@ -7,9 +7,19 @@ Published by John Murray, 1818, United Kingdom
 
 STAT545 B, Assignment 4, Andras Szeitz, Ph.D. student
 
-This code offers a procedure to remove the most common stop words from the book and a chart of the 20 most frequently used words in the novel.
+In this code,
 
-The second part of the code invites you to the humorous language game Pig Latin where letters of words are moved around with the addition of a subjectively selected fraction word to the end.
+Exercise 1 
+
+Offers a procedure to remove the most common stop words from the book and a chart of the 20 most frequently used words in the novel.
+
+Exercise 2 
+
+Invites you to the humorous language game Pig Latin where letters of words are moved around with the addition of a subjectively selected fraction word to the end.
+
+Exercise 3 
+
+Creates linear regression models using the mtcars dataset for each car make to predict fuel efficiency with relations to other variables.
 
 To clone the repository and run the code, follow the steps below
  
