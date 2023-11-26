@@ -1,8 +1,6 @@
 # Persuasion
 
-a novel by 
-
-# Jane Austen
+a novel by Jane Austen
 
 Published by John Murray, 1818, United Kingdom
 
@@ -11,7 +9,7 @@ STAT545 B, Assignment 4, Andras Szeitz, Ph.D. student
 
 This code offers a procedure to remove the most common stop words from the book and a chart of the 20 most frequently used words in the novel.
 
-The second part of the code invites you to the humorous language game Pig Latin where letters of words are moved around with the addition of a word fraction to the end.
+The second part of the code invites you to the humorous language game Pig Latin where letters of words are moved around with the addition of a subjectively selected fraction word to the end.
 
 To clone the repository and run the code, follow the steps below
  
