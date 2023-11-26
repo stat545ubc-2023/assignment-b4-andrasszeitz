@@ -1,0 +1,180 @@
+---
+title: "assignmentb4"
+author: "Andras Szeitz"
+date: "2023-11-27"
+output: github_document
+Roxygen: list(markdown = TRUE)
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Option A -- Strings and functional programming in R
+
+## Exercise 1 
+
+I will employ the tidytext package and stop_words dataset to remove the most common stop words.
+
+Installing the required packages.
+
+```{r}
+
+# install.packages("janeaustenr")
+# install.packages("stringi")
+# install.packages("stringi", dependencies = TRUE, type = "source")
+
+```
+
+Loading the necessary packages.
+
+```{r}
+
+library(janeaustenr)
+library(stringi)
+library(tidytext)
+library(stringr)
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+
+```
+
+Selecting and loading the book titled Persuasion.
+
+```{r}
+
+text <- austen_books() %>%
+  filter(book == "Persuasion")
+head(text)
+
+```
+
+Breaking up the text into individual words.
+
+```{r}
+
+words <- text %>%
+   unnest_tokens(word, text)
+words
+
+```
+
+Remove the stop words using stop_words dataset.
+
+```{r}
+
+data("stop_words")
+filtered_words <- words %>%
+  anti_join(stop_words, by = "word")
+filtered_words
+
+```
+
+Counting and sorting the words.
+
+```{r}
+
+word_counts <- filtered_words %>%
+  count(word, sort = TRUE)
+word_counts
+
+```
+
+Generating a lolly-pop plot for the top 20 most common words.
+
+```{r}
+
+# Assuming 'word_counts' is a data frame with 'word' and 'n' columns
+top_words <- head(word_counts, 20)
+
+# Create a lollipop plot
+library(ggplot2)
+
+ggplot(top_words, aes(x = reorder(word, n), y = n)) +
+  geom_segment(aes(x = word, xend = word, y = 0, yend = n), color = "skyblue") +
+  geom_point(color = "darkblue", size = 3) +
+  labs(title = "Top 20 Most Common Words in 'Persuasion'",
+       x = "Word",
+       y = "Frequency") +
+  theme_minimal() +
+  coord_flip()
+
+```
+
+## Exercise 2
+
+Making a function that converts words to my version of Pig Latin.
+
+```{r}
+
+#' Converting to Custom Pig Latin
+#'
+#' This function converts English words to my version of Pig Latin.
+#' The rearrangement involves moving the first letter of the word to the end, #' and the last letter of the word to the beginning and adding "bla" to the
+#' end.
+#'
+#' @param word A character string representing a single English word.
+#' @return A character string of the word converted to custom Pig Latin.
+#' @examples
+#' custom_pig_latin("flower")
+#' custom_pig_latin("summer")
+#' custom_pig_latin("happy")
+#' @export
+custom_pig_latin <- function(word) {
+  # Validating the input
+  if (!is.character(word) || length(word) != 1) {
+    stop("Input must be a single word (character string).")
+  }
+
+  if (nchar(word) == 0) {
+    return("bla")
+  }
+
+  # Checking if word starts with a vowel
+  if (tolower(substr(word, 1, 1)) %in% c('a', 'e', 'i', 'o', 'u')) {
+    # Moving the last letter to the start and add "bla"
+    return(paste0(substr(word, nchar(word), nchar(word)), substr(word, 1, nchar(word) - 1), "bla"))
+  } else {
+    # Moving the first letter to the end, then the last to the start, and add "bla"
+    return(paste0(substr(word, nchar(word), nchar(word)), substr(word, 2, nchar(word) - 1), substr(word, 1, 1), "bla"))
+  }
+}
+
+```
+
+Presenting an example
+
+```{r}
+custom_pig_latin("flower") # "rlowefbla"
+custom_pig_latin("summer") # "rummesbla"
+custom_pig_latin("happy") # "yapphbla"
+```
+
+the test function
+
+```{r}
+
+library(testthat)
+
+```
+
+```{r}
+# Begining test cases
+test_that("Custom Pig Latin Conversion Works Correctly", {
+  expect_equal(custom_pig_latin("flower"), "rlowefbla")
+  expect_equal(custom_pig_latin("summer"), "rummesbla")
+  expect_equal(custom_pig_latin("happy"), "yapphbla")
+})
+
+test_that("Handles Non-Standard Input", {
+  expect_error(custom_pig_latin(123))
+  expect_error(custom_pig_latin(TRUE))
+  expect_error(custom_pig_latin(NULL))
+})
+
+test_that("Handles Empty and Single Character Strings", {
+  expect_equal(custom_pig_latin(""), "bla")
+  expect_equal(custom_pig_latin("a"), "abla")
+})
+```
