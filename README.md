@@ -11,7 +11,7 @@ In this code,
 
 Exercise 1 
 
-Offers a procedure to remove the most common stop words from the book and a chart of the 20 most frequently used words in the novel.
+Offers a procedure to remove the most common stop words from the book and a chart of the 20 most frequently used words.
 
 Exercise 2 
 
