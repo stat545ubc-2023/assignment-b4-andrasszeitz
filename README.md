@@ -1,6 +1,6 @@
 # Persuasion
 
-a novel by Jane Austen
+A novel by Jane Austen
 
 Published by John Murray, 1818, United Kingdom
 
